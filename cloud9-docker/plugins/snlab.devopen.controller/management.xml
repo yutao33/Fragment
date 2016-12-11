@@ -1,0 +1,53 @@
+<a:application xmlns:a="http://ajax.org/2005/aml">
+  <a:bar id="hbox" skin="devopen-toolbar-top" skinset="controllers" class="fakehbox aligncenter controllers_buttons basic">
+    <a:button id="btnActivate"
+          tooltip  = "Activate"
+          icon     = "activate.png"
+          skin     = "devopen-menu-btn"
+          skinset  = "controllers"
+          class    = "nosize activate"
+          command  = "activate"
+          />
+    <a:button id="btnInactivate"
+          tooltip  = "Inactivate"
+          icon     = "inactivate.png"
+          skin     = "devopen-menu-btn"
+          skinset  = "controllers"
+          class    = "nosize inactivate"
+          command  = "inactivate"
+           />
+    <a:button id="btnManagement"
+          tooltip  = "Open CLI to manage controller"
+          icon     = "manage.png"
+          class    = "nosize manage"
+          command  = "manage"
+          skin     = "devopen-menu-btn"
+          skinset  = "controllers"
+          />
+    <a:divider  skin="devopen-divider" skinset="controllers" style="margin:0 3px 0 3px" />
+    <a:button id="btnAdd"
+          tooltip  = "Add controller"
+          icon     = "add.png"
+          class    = "nosize add"
+          command  = "add"
+          skin     = "devopen-menu-btn"
+          skinset  = "controllers"
+          />
+    <a:button id="btnDelete"
+          tooltip  = "Delete"
+          icon     = "delete.png"
+          skin     = "devopen-menu-btn"
+          skinset  = "controllers"
+          class    = "nosize delete"
+          command  = "delete"
+           />
+    <a:button id="btnMark"
+          tooltip  = "Mark as default"
+          icon     = "mark.png"
+          class    = "nosize mark"
+          command  = "mark"
+          skin     = "devopen-menu-btn"
+          skinset  = "controllers"
+          />
+  </a:bar>
+</a:application>
