@@ -1,0 +1,38 @@
+digraph {
+    
+    edge[fontname="SimSun",fontcolor=red];
+    node[fontname="SimSun",size="20,20"];
+
+    subgraph cluster0 {
+        color=red;
+        "曹操(0)","曹丕(1)","曹叡(2)","曹髦(3)","曹芳(4)","曹奂(5)"[shape=box];
+        fontname="SimSun"
+        label="#1 魏国";
+        "曹操(0)"->{"曹丕(1)", "曹彰", "曹宇"};
+        "曹丕(1)"->{"曹叡(2)", "曹霖"};
+        "曹霖"->"曹髦(3)"
+        "曹彰"->"曹楷"->"曹芳(4)"
+        "曹宇"->"曹奂(5)"
+    }
+    
+    subgraph cluster1 {
+        color=blue;
+        "刘备(0)","刘禅(1)"[shape=box];
+        fontname="SimSun"
+        label="#2 蜀国";
+        "刘备(0)"->"刘禅(1)"
+    }
+
+    subgraph cluster2 {
+        color=purple;
+        "孙坚(0)","孙策(1)","孙权(2)","孙亮(3)","孙休(4)","孙和(5)","孙皓(6)"[shape=box];
+        fontname="SimSun"
+        label="#3 吴国";
+        "孙坚(0)"->{"孙策(1)","孙权(2)"};
+        "孙权(2)"->{"孙和(5)","孙休(4)","孙亮(3)"};
+        "孙和(5)"->"孙皓(6)";
+    }
+
+    "初代君主"->{"曹操(0)","刘备(0)","孙坚(0)"}[style=dotted];
+    {"曹奂(5)","刘禅(1)","孙皓(6)"}->"末代君主"[style=dotted];
+}

@@ -1,0 +1,13 @@
+digraph {
+
+	nodepkt[shape=box,label="ddddddddddddddddddddddddddd"];
+
+    node0[shape=diamond,label="ETH_TYPE"];
+    node1[shape=box,label="ETHSRC"];
+    node2[shape=ellipse,label="path1\npath2\npath3"];
+    node3[shape=ellipse,label="drop"];
+
+    node0->node1[label="xxxxxx"];
+    node1->node2[label="yyyyyy"];
+    node0->node3[label="zzzzzz"];
+}
