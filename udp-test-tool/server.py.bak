@@ -19,31 +19,15 @@ count = 0
 
 feedbacksocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-t = None
-c1 = 0
-cc = 0
-bb = False
+t = None;
 
 while True:
     message, address = s.recvfrom(8192)
     num = struct.unpack('i',message)[0]
     if num==lastnum+1:
-        count = count + 1
-        if bb:
-        	cc = cc + 1
-        	if cc>3:
-        		cc = 0
-        		bb = False
-        		print("get it %d"%(num-c1))
-        else:
-        	if cc>3:
-        		c1 = num
-        	else:
-        		cc = cc + 1
+        count = count+1
     else:
-        print("num=%d lastnum=%d dist=%d"%(num,lastnum,num-lastnum))
-        bb = True
-        cc = 0
+        print("got it " + str(num-lastnum))
         count=0
         t=time.time()
     lastnum = num

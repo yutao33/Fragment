@@ -1,0 +1,16 @@
+digraph {
+
+    app[shape=diamond,label="flow.appType"];
+    http[shape=box,label="flow.httpRequestURL\nflow.httpRequestHost"];
+    ftp[shape=diamond,label="flow.ftpConn"];
+    ftpcmd[shape=box,label="flow.ftpUser\nflow.ftpPasswd"];
+    ftpdata[shape=box,label="flow.ftpMethod\nflow.fileName"];
+    tftp[shape=box,label="flow.tftpFileName"];
+
+    app->http[label="http"];
+    app->ftp[label="ftp"];
+    app->tftp[label="tftp"];
+    ftp->ftpcmd[label="cmdconn"];
+    ftp->ftpdata[label="dataconn"];	
+}
+

@@ -1,0 +1,18 @@
+@startuml
+client-->server: flags=S, seq=0, ack=0
+server-->client: flags=SA, seq=0, ack=1
+client-->server: flags=A, seq=1, ack=1
+client->server: flags=PA, seq=1, ack=1, len=72, data:GET / 
+server->client: flags=A, seq=1, ack=73
+server->client: flags=PA, seq=1, ack=73, len=17, data:HTTP/1
+client->server: flags=A, seq=73, ack=18
+server->client: flags=PA, seq=18, ack=73, len=136, data:Server
+client->server: flags=A, seq=73, ack=154
+server->client: flags=PA, seq=154, ack=73, len=2, data:\\r\\n
+client->server: flags=A, seq=73, ack=156
+server->client: flags=PA, seq=156, ack=73, len=652, data:<!DOCT
+client->server: flags=A, seq=73, ack=808
+server-->client: flags=FA, seq=808, ack=73
+client-->server: flags=FA, seq=73, ack=809
+server-->client: flags=A, seq=809, ack=74
+@enduml
