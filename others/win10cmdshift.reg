@@ -1,0 +1,19 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\cmd1]
+@="@shell32.dll,-8506"
+"Extended"=""
+"NoWorkingDirectory"=""
+"ShowBasedOnVelocityId"=dword:00639bc8
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\cmd1\command]
+@="cmd.exe /s /k pushd \"%V\""
+
+[HKEY_CLASSES_ROOT\Directory\shell\cmd1]
+@="@shell32.dll,-8506"
+"Extended"=""
+"NoWorkingDirectory"=""
+"ShowBasedOnVelocityId"=dword:006698a6
+
+[HKEY_CLASSES_ROOT\Directory\shell\cmd1\command]
+@="cmd.exe /s /k pushd \"%V\""
