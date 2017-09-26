@@ -1,0 +1,503 @@
+ready
+test-command -tA -1
+result
+
+close
+test-command -tA 10000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=3473
+time=3214
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 10000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=9503
+time=1936
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 10000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=9242
+time=1798
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 20000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=10176
+time=4401
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 20000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=12059
+time=3890
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 20000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=9441
+time=4173
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 30000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=13957
+time=6127
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 30000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=17482
+time=5398
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 30000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=23769
+time=5116
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 40000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=16305
+time=9269
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 40000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=22121
+time=7481
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 40000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=20767
+time=7641
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 50000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=21793
+time=9633
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 50000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=34112
+time=8450
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 50000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=20187
+time=10497
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 60000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=36322
+time=11361
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 60000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=24646
+time=11500
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 60000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=35483
+time=10696
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 70000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=31738
+time=12803
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 70000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=46649
+time=12149
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 70000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=25159
+time=13681
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 80000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=78144
+time=16796
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 80000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=48457
+time=15531
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 80000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=32108
+time=14263
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 90000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=88961
+time=19328
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 90000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=71663
+time=15857
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 90000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=27684
+time=18322
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 100000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=98876
+time=21400
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 100000
+result
+
+close
+test-command -tA -2
+read failed=0
+write failed=93497
+time=19748
+
+result
+
+close
+=====================
+test-command -tA -1
+result
+
+close
+test-command -tA 100000
+result
+
+close
+

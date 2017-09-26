@@ -1,8 +1,29 @@
 #include <iostream>
+#include <string.h>
+#include <stdlib.h>
 
 #ifdef WIN32
+
 #include <Windows.h>
 #include <winsock.h>
+#define ADDRLEN int
+
+#else
+
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#define ADDRLEN unsigned int
+#define SOCKET int
+#define INVALID_SOCKET -1
+#define SOCKET_ERROR -1
+
+void closesocket(SOCKET sock){
+	close(sock);
+}
+
 #endif
 
 
@@ -50,22 +71,22 @@ int main(int n, const char* argvs[]) {
 	sockaddr_in sin;
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(port);
-	sin.sin_addr.S_un.S_addr = INADDR_ANY;
+	sin.sin_addr.s_addr = INADDR_ANY;
 	if (bind(server, (const sockaddr*)&sin, sizeof(sin)) == SOCKET_ERROR) {
 		ERRORRETURN("bind error")
 	}
 
-	if (listen(server, 8) == SOCKET_ERROR) {
+	if (listen(server, 8)==SOCKET_ERROR) {
 		ERRORRETURN("listen error")
 	}
 
 	SOCKET client;
 	sockaddr_in remote;
-	int addrlen = sizeof(remote);
+	ADDRLEN addrlen = sizeof(remote);
 	char buf[256];
 	while (true) {
 		DEBUG("waiting for connect")
-			client = accept(server, (sockaddr*)&remote, &addrlen);
+		client = accept(server,(sockaddr*)&remote, &addrlen);
 		if (client == INVALID_SOCKET) {
 			DEBUG("accept invalid")
 		}
@@ -78,11 +99,12 @@ int main(int n, const char* argvs[]) {
 		send(client, data, strlen(data), 0);
 		closesocket(client);
 	}
-
+	
 
 	//will never run to here
 	closesocket(server);
-
+#ifdef WIN32
 	WSACleanup();
-	return 0;
+#endif
+    return 0;
 }
