@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string.h>
 #include <stdlib.h>
-#include <math.h>
+#include <process.h>
 
 #ifdef WIN32
 
@@ -40,23 +40,22 @@ using namespace std;
 #define DEBUG(msg) {}
 #endif
 
+
 SOCKET server;
 
-// DictClient 127.0.0.1 4500 test
+void func(void* arg);
+
+// DictServer 4500
 int main(int n, const char* argvs[]) {
 	int port = 4500;
-	int dstip_net = inet_addr("127.0.0.1");
-	const char* word = "test";
-	if (n >= 4) {
-		dstip_net = inet_addr(argvs[1]);
-		port = atoi(argvs[2]);
-		word = argvs[3];
+	if (n >= 2) {
+		port = atoi(argvs[1]);
 		if (port < 1 || port>65535) {
 			ERRORRETURN("port must be in range of 1-65535")
 		}
 	}
 	else {
-		cout << "Default 127.0.01 4500 test" << endl;
+		cout << "Default Port 4500" << endl;
 	}
 
 #ifdef WIN32
@@ -67,32 +66,61 @@ int main(int n, const char* argvs[]) {
 	}
 #endif
 
-	SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	server = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
-	if (sock == INVALID_SOCKET) {
+	if (server == INVALID_SOCKET) {
 		ERRORRETURN("invalid socket")
 	}
 
 	sockaddr_in sin;
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(port);
-	sin.sin_addr.s_addr = dstip_net;
-	if (connect(sock, (const sockaddr*)&sin, sizeof(sin)) == SOCKET_ERROR) {
-		ERRORRETURN("connect error")
+	sin.sin_addr.s_addr = INADDR_ANY;
+	if (bind(server, (const sockaddr*)&sin, sizeof(sin)) == SOCKET_ERROR) {
+		ERRORRETURN("bind error")
 	}
 
-	int ret = send(sock, word, strlen(word), 0);
+	if (listen(server, 8)==SOCKET_ERROR) {
+		ERRORRETURN("listen error")
+	}
 
-	char buf[1024];
-	ret = recv(sock, buf, 1023, 0);
-	buf[ret] = 0;
-	DEBUG(ret)
-	cout << buf << endl;
+	SOCKET client;
+	sockaddr_in remote;
+	ADDRLEN addrlen = sizeof(remote);
+
+	while (true) {
+		DEBUG("waiting for connect")
+		client = accept(server,(sockaddr*)&remote, &addrlen);
+		if (client == INVALID_SOCKET) {
+			DEBUG("accept invalid");
+			continue;
+		}
+		SOCKET* p = new SOCKET(client);
+		_beginthread(func, 0, p);
+	}
+	
 
 	//will never run to here
-	closesocket(sock);
+	closesocket(server);
 #ifdef WIN32
 	WSACleanup();
 #endif
     return 0;
+}
+
+void func(void*arg) {
+	DEBUG("threadid=" << _threadid);
+	SOCKET* p = (SOCKET*)arg;
+	char buf[256];
+	int ret = recv(*p, buf, 255, 0);
+	if (ret) {
+		buf[ret] = 0;
+		DEBUG("recv ret=" << ret);
+		INFO(buf)
+	}
+	char* data = "return";
+	send(*p, data, strlen(data), 0);
+	closesocket(*p);
+	delete arg;
+	_endthread();
 }

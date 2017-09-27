@@ -88,12 +88,14 @@ int main(int n, const char* argvs[]) {
 		DEBUG("waiting for connect")
 		client = accept(server,(sockaddr*)&remote, &addrlen);
 		if (client == INVALID_SOCKET) {
-			DEBUG("accept invalid")
+			DEBUG("accept invalid");
+			continue;
 		}
 		int ret = recv(client, buf, 255, 0);
 		if (ret) {
 			buf[ret] = 0;
-			DEBUG(buf)
+			DEBUG("recv ret=" << ret);
+			INFO(buf)
 		}
 		char* data = "return";
 		send(client, data, strlen(data), 0);
