@@ -68,6 +68,10 @@ int main(int n, const char* argvs[]) {
 		ERRORRETURN("invalid socket")
 	}
 
+	int on = 1;
+	setsockopt(server,SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
+
+
 	sockaddr_in sin;
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(port);

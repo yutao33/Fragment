@@ -73,6 +73,10 @@ int main(int n, const char* argvs[]) {
 		ERRORRETURN("invalid socket")
 	}
 
+	int on = 1;
+	setsockopt(server,SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
+
+
 	sockaddr_in sin;
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(port);
@@ -118,7 +122,7 @@ int main(int n, const char* argvs[]) {
 }
 
 void func(SOCKET sock) {
-	DEBUG("threadid=" << _threadid);
+	DEBUG("threadid=" << this_thread::get_id());
 	char buf[256];
 	int ret = recv(sock, buf, 255, 0);
 	if (ret) {
