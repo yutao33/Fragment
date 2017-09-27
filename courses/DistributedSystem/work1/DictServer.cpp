@@ -69,7 +69,7 @@ int main(int n, const char* argvs[]) {
 	}
 
 	int on = 1;
-	setsockopt(server,SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
+	setsockopt(server,SOL_SOCKET, SO_REUSEADDR, (const char*)&on, sizeof(on));
 
 
 	sockaddr_in sin;

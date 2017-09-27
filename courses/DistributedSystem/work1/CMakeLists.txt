@@ -7,7 +7,9 @@ add_executable( DictServer DictServer.cpp )
 add_executable( DictServer1 DictServer1.cpp )
 add_executable( DictClient DictClient.cpp )
 
-message(${CMAKE_BUILD_TYPE})
+if(CMAKE_BUILD_TYPE)
+	message(${CMAKE_BUILD_TYPE})
+endif(CMAKE_BUILD_TYPE)
 
 if(WIN32)
     message("WIN32")
