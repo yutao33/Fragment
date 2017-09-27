@@ -1,7 +1,8 @@
 #include <iostream>
 #include <string.h>
 #include <stdlib.h>
-#include <process.h>
+#include <thread>
+#include <list>
 
 #ifdef WIN32
 
@@ -43,7 +44,7 @@ using namespace std;
 
 SOCKET server;
 
-void func(void* arg);
+void func(SOCKET sock);
 
 // DictServer 4500
 int main(int n, const char* argvs[]) {
@@ -76,7 +77,7 @@ int main(int n, const char* argvs[]) {
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(port);
 	sin.sin_addr.s_addr = INADDR_ANY;
-	if (bind(server, (const sockaddr*)&sin, sizeof(sin)) == SOCKET_ERROR) {
+	if (::bind(server, (const sockaddr*)&sin, sizeof(sin)) == SOCKET_ERROR) {
 		ERRORRETURN("bind error")
 	}
 
@@ -88,6 +89,7 @@ int main(int n, const char* argvs[]) {
 	sockaddr_in remote;
 	ADDRLEN addrlen = sizeof(remote);
 
+	list<thread> list;
 	while (true) {
 		DEBUG("waiting for connect")
 		client = accept(server,(sockaddr*)&remote, &addrlen);
@@ -95,11 +97,18 @@ int main(int n, const char* argvs[]) {
 			DEBUG("accept invalid");
 			continue;
 		}
-		SOCKET* p = new SOCKET(client);
-		_beginthread(func, 0, p);
+		for (auto iter = list.begin(); iter != list.end(); ) {
+			if (iter->joinable()) {
+				iter->join();
+				iter = list.erase(iter);
+			}
+			else {
+				iter++;
+			}
+		}
+		list.push_back(thread(func, client));
 	}
 	
-
 	//will never run to here
 	closesocket(server);
 #ifdef WIN32
@@ -108,19 +117,16 @@ int main(int n, const char* argvs[]) {
     return 0;
 }
 
-void func(void*arg) {
+void func(SOCKET sock) {
 	DEBUG("threadid=" << _threadid);
-	SOCKET* p = (SOCKET*)arg;
 	char buf[256];
-	int ret = recv(*p, buf, 255, 0);
+	int ret = recv(sock, buf, 255, 0);
 	if (ret) {
 		buf[ret] = 0;
 		DEBUG("recv ret=" << ret);
 		INFO(buf)
 	}
 	char* data = "return";
-	send(*p, data, strlen(data), 0);
-	closesocket(*p);
-	delete arg;
-	_endthread();
+	send(sock, data, strlen(data), 0);
+	closesocket(sock);
 }
