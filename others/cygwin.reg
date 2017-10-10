@@ -1,0 +1,24 @@
+Windows Registry Editor Version 5.00
+
+# cygwin.bat  %V   set _T=%*
+# export _T=${_T//\\//} # replace backslash to fowardslash
+# if [[ $_T == "" ]]; then
+#  export _T="c:/Users/Administrator"
+# fi
+# cd "$_T"
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\cygwin]
+@="Cygwin"
+"Extended"=""
+"ShowBasedOnVelocityId"=dword:00639bc8
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\cygwin\command]
+@="E:\\Cygwin\\Cygwin\\bin\\mintty.exe -e E:\\Cygwin\\Cygwin\\bin\\bash -c \"/bin/xhere /bin/bash.exe\""
+
+[HKEY_CLASSES_ROOT\Directory\shell\cygwin]
+@="Cygwin"
+"Extended"=""
+"ShowBasedOnVelocityId"=dword:00639bc8
+
+[HKEY_CLASSES_ROOT\Directory\shell\cygwin\command]
+@="E:\\Cygwin\\Cygwin\\bin\\mintty.exe -e E:\\Cygwin\\Cygwin\\bin\\bash -c \"/bin/xhere /bin/bash.exe\""

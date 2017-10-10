@@ -3,9 +3,26 @@ cmake_minimum_required( VERSION 2.8 )
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-add_executable( DictServer DictServer.cpp )
-add_executable( DictServer1 DictServer1.cpp )
-add_executable( DictClient DictClient.cpp )
+# set(EXECUTABLE_OUTPUT_PATH  ${PROJECT_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
+SET( CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+SET( CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+
+file(GLOB_RECURSE CURRENT_HEADERS  *.h *.hpp)
+source_group("Include" FILES ${CURRENT_HEADERS})
+
+add_executable( DictServer DictServer.cpp Dict.cpp Dict.h Server.h Common.h)
+add_executable( DictServer1 DictServer1.cpp Dict.cpp Dict.h Server.h Common.h)
+add_executable( DictClient DictClient.cpp Common.h)
+
+# add_custom_command(TARGET DictServer
+#     POST_BUILD
+#     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+#     COMMAND ${CMAKE_COMMAND} -E copy dict.txt ${EXECUTABLE_OUTPUT_PATH}/dict.txt)
+add_custom_command(OUTPUT dict.txt
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/dict.txt ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/dict.txt)
+
+add_custom_target(COPYRES ALL DEPENDS dict.txt)
 
 if(CMAKE_BUILD_TYPE)
 	message(${CMAKE_BUILD_TYPE})

@@ -1,44 +1,4 @@
-#include <iostream>
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
-
-#ifdef WIN32
-
-#include <Windows.h>
-#include <winsock.h>
-#define ADDRLEN int
-
-#else
-
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#define ADDRLEN unsigned int
-#define SOCKET int
-#define INVALID_SOCKET -1
-#define SOCKET_ERROR -1
-
-void closesocket(SOCKET sock){
-	close(sock);
-}
-
-#endif
-
-
-using namespace std;
-
-#define ERRORRETURN(msg) {cout<<msg<<endl;return -1;}
-
-#define INFO(msg) {cout<<msg<<endl;}
-
-#ifdef _DEBUG
-#define DEBUG(msg) {cout<<msg<<endl;}
-#else
-#define DEBUG(msg) {}
-#endif
+#include "Common.h"
 
 SOCKET server;
 
@@ -86,8 +46,19 @@ int main(int n, const char* argvs[]) {
 	char buf[1024];
 	ret = recv(sock, buf, 1023, 0);
 	buf[ret] = 0;
-	DEBUG(ret)
-	cout << buf << endl;
+	DEBUG(ret);
+	
+	if (ret == 0) {
+		INFO("Error: no return");
+	} else if (buf[0] == 'e') {
+		INFO("Error: no word");
+	}
+	else if (buf[0] == 'r') {
+		cout << (buf + 1) << endl;
+	}
+	else {
+		INFO("Error: Unknown result");
+	}
 
 	//will never run to here
 	closesocket(sock);
