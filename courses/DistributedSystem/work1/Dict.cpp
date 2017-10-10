@@ -22,8 +22,8 @@ void DictionaryInit()
 		if (line2.length() == 0)
 			continue;
 		globalDict[line1] = line2;
-		//cout << line1 << ":" << line2 << endl;
 	}
+	cout<<"dictionay size = "<<globalDict.size()<<endl;
 }
 
 string DictionarySearch(string str) 

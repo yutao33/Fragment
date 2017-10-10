@@ -19,8 +19,15 @@ add_executable( DictClient DictClient.cpp Common.h)
 #     POST_BUILD
 #     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 #     COMMAND ${CMAKE_COMMAND} -E copy dict.txt ${EXECUTABLE_OUTPUT_PATH}/dict.txt)
-add_custom_command(OUTPUT dict.txt
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/dict.txt ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/dict.txt)
+if(WIN32)
+    message("WIN32, will copy dict.txt")
+    add_custom_command(OUTPUT dict.txt
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/dict.txt ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/dict.txt)
+else()
+    message("not WIN32, will copy dict.unix.txt")
+    add_custom_command(OUTPUT dict.txt
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/dict.unix.txt ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/dict.txt)
+endif()
 
 add_custom_target(COPYRES ALL DEPENDS dict.txt)
 
