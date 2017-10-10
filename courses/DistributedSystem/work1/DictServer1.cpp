@@ -48,7 +48,7 @@ int main(int n, const char* argvs[]) {
 		ERRORRETURN("bind error")
 	}
 
-	if (listen(server, 8)==SOCKET_ERROR) {
+	if (listen(server, 1024)==SOCKET_ERROR) {
 		ERRORRETURN("listen error")
 	}
 
