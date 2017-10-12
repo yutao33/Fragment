@@ -1,0 +1,18 @@
+1. Make sure you have ‘apt-transport-https’ installed by running command:
+
+dpkg -s apt-transport-https > /dev/null || bash -c "sudo apt-get update; sudo apt-get install apt-transport-https -y" 
+Type in your password (no visual feedback) when it prompts and hit Enter.
+
+check-apt-transporthttps
+
+2. Download and install Skype GPG key via command:
+
+curl https://repo.skype.com/data/SKYPE-GPG-KEY | sudo apt-key add -
+3. Add Skype apt repository to your system via command:
+
+echo "deb [arch=amd64] https://repo.skype.com/deb stable main" | sudo tee /etc/apt/sources.list.d/skype-stable.list
+4. Finally, install Skype for Linux either via Synaptic Package Manager or by running following commands in terminal:
+
+sudo apt update
+
+sudo apt install skypeforlinux
