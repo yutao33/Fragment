@@ -1,0 +1,16 @@
+ì
+≥ıÄgbpgbpmeta.src_gid (meta.dst_gid (ipv4.protocol (meta.dst_port (‚ÕÇ∏∂Ä∑∂Å@defaultonly()@Äj
+å’Ç	ipforward	ipforwardipv4.srcAddr  (ipv4.dstAddr  (¢âÄ∑∂Å@defaultonly()@ÄV
+ôèÉ
+set_dstgid
+set_dstgidipv4.dstAddr  (ÌûÉ∑∂Å@defaultonly()@ÄV
+‹ÆÄ
+set_srcgid
+set_srcgidipv4.srcAddr  (áµÄ∑∂Å@defaultonly()@Ä
+∑∂ÅNoActionNoAction
+‚ÕÇnopnop
+∏∂Ä_drop_drop'
+¢âÄ_forward_forward
+port 	&
+ÌûÉset_dgidset_dgid	gid &
+áµÄset_sgidset_sgid	gid 
