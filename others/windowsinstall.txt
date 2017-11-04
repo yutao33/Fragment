@@ -1,0 +1,7 @@
+shift+f10
+list disk
+select disk 0
+clean
+convert gpt
+create partition efi size=512
+create partition msr size=128
