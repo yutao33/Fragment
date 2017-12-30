@@ -1,0 +1,93 @@
+\section{理论推导}
+
+本节给出ICA理论的具体数学推导，推导的过程主要参考了\cite{icachinese,ica,fastica,icatutorial}。
+
+\subsection{问题定义}
+可以使用统计上的“隐变量”模型定义ICA问题，假设观察到$n$个随机变量$x_1,x_2,\ldots,x_n$，而这些变量是由另外$n$个随机变量$s_1,s_2,\ldots,s_n$线性组合得到，可以用矩阵形式表示如下
+\begin{equation}
+    \mathbf{x}=\mathbf{As}
+\end{equation}
+其中
+\begin{equation}
+    \mathbf{x}=\left(
+        \begin{aligned}
+        x_1\\
+        x_2\\
+        \vdots\\
+        x_n
+        \end{aligned}
+    \right),
+    \mathbf{s}=\left(
+        \begin{aligned}
+        s_1\\
+        s_2\\
+        \vdots\\
+        s_n
+        \end{aligned}
+    \right),
+    \mathbf{A}=\left(
+        \begin{array}{cccc}
+        a_{11} & a_{12} & \cdots & a_{1n} \\ 
+        a_{21} & a_{22} & \cdots & a_{2n} \\ 
+        \vdots & \vdots & \ddots & \vdots \\ 
+        a_{n1} & a_{n2} & \cdots & a_{nn}
+        \end{array} 
+    \right)
+\end{equation}
+
+\textbf{假设和约束}：为了确保ICA模型可以被估计，必须做出下面的假设和约束
+\begin{enumerate}
+    \item 假设独立成分是统计独立的
+    \item 独立成分具有非高斯的分布
+    \item 未知的混合矩阵是方阵
+\end{enumerate}
+
+\textbf{ICA中的不确定性}：在以上定义的ICA模型中，可以发现存在下面一些不确定性
+\begin{enumerate}
+    \item 无法确定独立成分的方差
+    \item 无法确定独立成分的次序
+\end{enumerate}
+
+\textbf{变量的中心化}：不失一般性，我们可以假定所有的混合变量与独立成分均具有零均值。这作为下面推导的一个默认假设，如果实际情况不满足零均值假设，可以进行中心化的预处理：
+\[ 
+    \mathbf{x}=\mathbf{x'}-E{\mathbf{x'}}
+\]
+这样独立成分也同时变为零均值的量，因为：
+\[
+    E{\mathbf{s}}=\mathbf{A}^{-1}E{\mathbf{x}}
+\]
+
+\textbf{不相关性和白化}：不相关性是独立性的一个弱化的形式。如果两个随机变量$y_1$和$y_2$的协方差为零，我们说这两个变量是不相关的：
+\[
+    cov(y_1,y_2)=E\{y_1y_2\}-E\{y_1\}E\{y_2\}=0
+\]
+如果随机变量是相互独立的，那么他们就是不相关的，但是不相关并不意味着独立。
+
+白化性(whiteness)是指一个零均值的随机向$y$的各个分量具有相同的单位方差且互相不相关，换句话说$y$的协方差矩阵是单位矩阵：
+\[
+    E\{\textbf{yy}^T\}=\textbf{\mathit{I}}
+\]
+白化意味着我们将观察得到的数据向量$\mathbf{x}$与某个矩阵$\mathbf{V}$相乘后得到的是一个新的白化的向量：
+\[
+    \mathbf{z}=\mathbf{Vx}
+\]
+白化变换总是可实现的，一般可以利用协方差矩阵的特征值分解（EVD）:
+\[
+    E\{\textbf{xx}^T \}=\textbf{EDE}^T
+\]
+式中，$\mathbf{E}$是$E\{\mathbf{xx}^T \}$的特征向量的正交矩阵，$\textbf{D}$是相应的特征向量的对角矩阵，$D=diag{d_1,d_2,\cdots,d_n}$。这样，白化过程可以利用下面的白化矩阵来实现：
+\[
+    \mathbf{V}=\mathbf{E}\mathbf{D}^{-1/2}\mathbf{E}^T
+\]
+
+
+\subsection{极大化非高斯性的ICA估计方法}
+
+\textbf{关于非高斯性}：如果两个独立成分$s_1$和$s_2$是高斯分布的，则它们的联合概率密度可以表示为：
+\[
+p(s_1,s_2)
+=\frac{1}{2\pi}exp(-\frac{s_1^2+s_2^2}{2})
+=\frac{1}{2\pi}exp(-\frac{{\lVert \mathbf{s} \rVert}^2}{2})
+\]
+
+

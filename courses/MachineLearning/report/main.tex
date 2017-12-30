@@ -1,34 +1,94 @@
 \documentclass[UTF8,zihao=5]{ctexart}
 
+\usepackage{amsmath}
 \usepackage{geometry}
 \geometry{a4paper,scale=0.8}
 \usepackage[numbers]{gbt-7714-2015}
 % \usepackage[sectionbib]{chapterbib}
+\usepackage{minted}
 
-\title{同济大学机器学习课程报告---PCA和ICA理论推导与实际应用}
+
+%同济大学机器学习课程报告---ICA理论推导、实现和应用
+
+\title{ICA理论推导、实现和应用}
 \author{余海涛 1732985}
-
+\date{}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-    本篇报告分析了机器学习中使用的主成分分析(PCA)和独立成分分析(ICA)方法的数学原理和具体实现，
-    分析了两者之间的相同和不同之处。
+    本篇报告从基础出发对独立成分分析(ICA)理论进行了问题定义和数学推导，基于Python实现了FastICA算法，并结合实例展示了ICA的实际应用，对之前的一些不清晰的案例进行了解释。是对ICA理论的一次学习总结。
 \end{abstract}
 
 
-\section{介绍}
-主成分分析(Principal Component Analysis, PCA)，是一种统计方法。通过正交变换将一组可能存在相关性的变量转换为一组线性不相关的变量，转换后的这组变量叫主成分。
+\section{概述}
+在统计学中，独立成分分析\cite{icawikipedia,ica,icachinese}（Independent components analysis，缩写：ICA）是一种利用统计原理进行计算的方法。它是一个线性变换。这个变换把数据或信号分离成统计独立的非高斯的信号源的线性组合。独立成分分析是盲信号分离（Blind source separation）的一种特例。
 
-\section{PCA理论推导}
-本节内容主要参考\cite{pca}
-\section{ICA理论推导}
+独立成分分析的最重要的假设就是信号源统计独立。这个假设在大多数盲信号分离的情况中符合实际情况。即使当该假设不满足时，仍然可以用独立成分分析来把观察信号统计独立化，从而进一步分析数据的特性。独立成分分析的经典问题是“鸡尾酒会问题”（cocktail party problem）。该问题描述的是给定混合信号，如何分离出鸡尾酒会中同时说话的每个人的独立信号。当有N个信号源时，通常假设观察信号也有N个（例如N个麦克风或者录音机）。该假设意味着混合矩阵是个方阵，即$J = D$，其中$D$是输入数据的维数，$J$是系统模型的维数。对于$J < D$和$J > D$的情况，学术界也分别有不同研究。
 
-\section{实际使用案例}
+鸡尾酒会问题的原始阐述如下。假设你在一个房间里，有三个人在同时讲话，还有三个麦克风，摆放在不同的位置进行录音，麦克风记录下的三个信号可以表示为$x_1(t)$,$x_2(t)$和$x_3(t)$，其中$t$表示时间,$x_1$，$x_2$,$x_3$表示信号幅值，可以认为每一个信号都是三个讲话者发出的信号的加权和，假设三个讲话者的信号用$s_1(t)$,$s_2(t)$和$s_3(t)$表示，则$x_i$和$s_i$的关系可以用线性方程的形式表示为
+\begin{equation}
+    \left\{
+        \begin{aligned}
+            x_1(t)=a_{11}s_1(t)+a_{12}s_2(t)+a_{13}s_3(t) \\
+            x_2(t)=a_{21}s_1(t)+a_{22}s_2(t)+a_{23}s_3(t) \\
+            x_3(t)=a_{31}s_1(t)+a_{32}s_2(t)+a_{33}s_3(t)
+        \end{aligned}
+    \right.
+\end{equation}
+式中$a_{ij}(i,j=1,\ldots,3)$是由麦克风与讲话者距离决定的未知数，这里都是未知数，注意这里的模型忽略了录音的时延和其他影响因素，假设三个录音机的采样是同步的，则如何只根据最终的三个录音信号，得到变换的参数和最初的信号，就是独立成分分析要解决的问题。
+
+
+
+\input{theory.tex}
+
+
+
+\section{算法实现}
+
+FastICA算法如表\ref{fast_ica_alg}所示：
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l}
+        \hline 
+        1. 对数据进行中心化使其均值为0\\
+        2. 然后对数据进行白化得到$z$\\
+        3. 选择要估计的独立成分个数$m$。置$p\leftarrow 1$\\
+        4. 选择具有单数范数的初始化向量$w_p$(可随机选取)\\
+        5. 更新$w_p$:$w_p\leftarrow E\{zg(w_P^T z)\}-E\{g'(w_p^T z)w_p\}$,其中g的定义可以取\\
+        6. 进行下面的正交化
+        $\mathbf{w}_p\leftarrow \mathbf{w}_p-\sum_{j=1}^{p-1}(\mathbf{w}_p^T \mathbf{w}_j)\mathbf{w}_j$ \\
+        7. 标准化$w_p$,即 $\mathbf{w}_p\leftarrow \mathbf{w}_p/\lVert \mathbf{w}_p \rVert$\\
+        8. 如果$\mathbf{w}_p$尚未收敛，返回步骤5\\
+        9. 置$p\leftarrow p+1$。如果$p\leq m$，返回步骤4\\
+        \hline 
+    \end{tabular} 
+    \caption{估计多个独立成分的FastICA算法，使用渐进（串行）正交化方法。实际应用中，期望用样本的平均值来估计}
+    \label{fast_ica_alg}
+\end{table}
+
+\input{pythoncode.tex}
+
+
+\section{实际应用}
+如前文所述，ICA算法的一个实际应用是盲信号分离。本节先给出一个分离三个合成的周期信号的例子\cite{example} 。
+
+
+结果如图\ref{fig:result1}所示,
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\linewidth]{figs/result1}
+    \caption{实验1结果}
+    \label{fig:result1}
+\end{figure}
+
+本节最后给出一个分离混合音频信号的例子程序。
 
 \section{总结}
-本文从数学原理出发分析了PCA和ICA方法的相同和不同之处。通过本文
+本文分析了ICA方法的数学原理，实现了FastICA算法，并且实际分析了ICA算法的效果。通过本文的写作，本文作者对ICA算法有了清晰的认识，并且可以应用于以后的学习之中。
 
 % \gbtbibstyle{numerical}
 % \bibliographystyle{gbt-7714-2015-numerical}
