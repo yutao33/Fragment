@@ -18,7 +18,7 @@ s2 = np.sign(np.sin(3 * time))  # Signal 2 : square signal
 s3 = signal.sawtooth(2 * np.pi * time)  # Signal 3: saw tooth signal
 
 S = np.c_[s1, s2, s3]
-# S += 0.2 * np.random.normal(size=S.shape)  # Add noise
+S += 0.2 * np.random.normal(size=S.shape)  # Add noise
 
 S /= S.std(axis=0)  # Standardize data
 # Mix data
@@ -47,12 +47,14 @@ plt.figure()
 models = [X, S, S_, H]
 names = [u'混合信号',
          u'原始信号',
-         u'ICA解析信号',
+         u'ICA分离信号',
          u'PCA解析信号']
 colors = ['red', 'steelblue', 'orange']
 
 for ii, (model, name) in enumerate(zip(models, names), 1):
-    plt.subplot(4, 1, ii)
+    if ii==4:
+        break
+    plt.subplot(3, 1, ii)
     plt.title(name)
     for sig, color in zip(model.T, colors):
         plt.plot(sig, color=color)

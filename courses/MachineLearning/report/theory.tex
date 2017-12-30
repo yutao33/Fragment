@@ -49,45 +49,71 @@
 \end{enumerate}
 
 \textbf{变量的中心化}：不失一般性，我们可以假定所有的混合变量与独立成分均具有零均值。这作为下面推导的一个默认假设，如果实际情况不满足零均值假设，可以进行中心化的预处理：
-\[ 
+\begin{equation} 
     \mathbf{x}=\mathbf{x'}-E{\mathbf{x'}}
-\]
+\end{equation}
 这样独立成分也同时变为零均值的量，因为：
-\[
+\begin{equation}
     E{\mathbf{s}}=\mathbf{A}^{-1}E{\mathbf{x}}
-\]
+\end{equation}
 
 \textbf{不相关性和白化}：不相关性是独立性的一个弱化的形式。如果两个随机变量$y_1$和$y_2$的协方差为零，我们说这两个变量是不相关的：
-\[
+\begin{equation}
     cov(y_1,y_2)=E\{y_1y_2\}-E\{y_1\}E\{y_2\}=0
-\]
+\end{equation}
 如果随机变量是相互独立的，那么他们就是不相关的，但是不相关并不意味着独立。
 
 白化性(whiteness)是指一个零均值的随机向$y$的各个分量具有相同的单位方差且互相不相关，换句话说$y$的协方差矩阵是单位矩阵：
-\[
-    E\{\textbf{yy}^T\}=\textbf{\mathit{I}}
-\]
+\begin{equation}
+    E\{\textbf{yy}^T\}=\mathbf{\mathit{I}}
+\end{equation}
 白化意味着我们将观察得到的数据向量$\mathbf{x}$与某个矩阵$\mathbf{V}$相乘后得到的是一个新的白化的向量：
-\[
+\begin{equation}
     \mathbf{z}=\mathbf{Vx}
-\]
+\end{equation}
 白化变换总是可实现的，一般可以利用协方差矩阵的特征值分解（EVD）:
-\[
+\begin{equation}
     E\{\textbf{xx}^T \}=\textbf{EDE}^T
-\]
-式中，$\mathbf{E}$是$E\{\mathbf{xx}^T \}$的特征向量的正交矩阵，$\textbf{D}$是相应的特征向量的对角矩阵，$D=diag{d_1,d_2,\cdots,d_n}$。这样，白化过程可以利用下面的白化矩阵来实现：
-\[
+\end{equation}
+式中，$\mathbf{E}$是$E\{\mathbf{xx}^T \}$的特征向量的正交矩阵，$\textbf{D}$是相应的特征向量的对角矩阵，$D=diag\{d_1,d_2,\cdots,d_n\}$。这样，白化过程可以利用下面的白化矩阵来实现：
+\begin{equation}
     \mathbf{V}=\mathbf{E}\mathbf{D}^{-1/2}\mathbf{E}^T
-\]
+\end{equation}
+式中，矩阵$\mathbf{D}^{-1/2}=diag\{d_1^{-1/2},d_2^{-1/2},\cdots,d_n^{-1/2}\}$。这样得到的白化矩阵记为$E{\mathbf{xx}^T}^{-1/2}$或$\mathbf{C}^{-1/2}$。在后文的推导过程中，对数据的白化处理也是很重要的一个环节。
 
 
 \subsection{极大化非高斯性的ICA估计方法}
 
 \textbf{关于非高斯性}：如果两个独立成分$s_1$和$s_2$是高斯分布的，则它们的联合概率密度可以表示为：
-\[
+\begin{equation}
 p(s_1,s_2)
 =\frac{1}{2\pi}exp(-\frac{s_1^2+s_2^2}{2})
 =\frac{1}{2\pi}exp(-\frac{{\lVert \mathbf{s} \rVert}^2}{2})
-\]
+\end{equation}
+假定混合矩阵是正交的。根据概率密度函数的变换公式（参见附录\ref{apx:1}）,根据正交矩阵的特点，$\textbf{A}^{-1}=\textbf{A}^T$成立，可以得到混合变量$x_1$和$x_2$的联合密度函数为：
+\begin{equation}
+p(x_1,x_2)
+=\frac{1}{2\pi}exp(-\frac{{\lVert \mathbf{A}^T\mathbf{x} \rVert}^2}{2})|\text{det}\,\mathbf{A}^T|    
+\end{equation}
+由$\mathbf{A}$的正交性可知${\lVert \mathbf{A}^T\mathbf{x} \rVert}^2={\lVert \mathbf{x} \rVert}^2$和$|\text{det}\,\mathbf{A}|=1$成立。另外如果$\textbf{A}$是正交的，其转置$\textbf{A}^T$也同样是正交的。因此我们有：
+\begin{equation}
+p(x_1,x_2)
+=\frac{1}{2\pi}exp(-\frac{{\lVert \mathbf{x} \rVert}^2}{2})
+\end{equation}
+这里可以看出混合变量的概率密度函数和原始的概率密度函数都是二维高斯分布，我们没有任何办法得到混合矩阵的信息。
+
+\textbf{极大化非高斯性的原理}：中心极限定理是概率论中的一个经典结论，该定理告诉我们，独立的随机变量之和的分布趋向于高斯分布。或者不那么严格的讲，可以认为两个独立随机变量之和形成的分布比两个原始的随机变量中的任意一个更接近于高斯分布。
+
+现在为了估计出ICA数据模型中的一个独立成分，我们先假定所有独立成分具有相同的分布，可以考虑对$x_i$进行某种线性组合，有：
+\begin{equation}
+    y=\mathbf{b}^T\mathbf{x}=\mathbf{q}^T\mathbf{s}=\sum_{i}q_is_i
+\end{equation}
+如果$\mathbf{b}$是$\mathbf{A}^{-1}$中的一行，那么该线性组合$\mathbf{b}^T\mathbf{A}$就等于其中一个独立成分，而对应的向量$\mathbf{q}$只有一个元素为1，其他的元素均为0.
+
+问题在于：我们如何使用中心极限定理确定$\mathbf{b}$，是的它刚好等于$\mathbf{A}$的逆矩阵中的一行？实际上，我们无法准确地得到这样地$\mathbf{b}$,因为没有关于矩阵$\mathbf{A}$的先验知识，但是可以找到具有较好近似程度的一个估计。
+
+我们可以通过改变$\mathbf{q}$中的系数来观察$y=\mathbf{q}^T\mathbf{s}$的分布如何变化。这里的基本思想是，既然两个独立随机变量之和分布的高斯性都比原始变量的更强，那么$y=\mathbf{q}^T\mathbf{s}$应该比任意一个$s_i$的高斯性更强，除非y刚好就是$s_i$中的一个，只有在该情况下y的高斯性才最弱（注意，该结论只有在假定所有$s_i$具有相同分布的情况下才严格成立）。这是显然$\mathbf{q}$中只有一个元素$q_i$为非零值。
+
+实际情况下我们并不知道$\mathbf{q}$的值，但也无须知道，因为根据定义$\mathbf{b}^T\mathbf{x}=\mathbf{q}^T\mathbf{s}$，可以只让$\mathbf{b}$变化并观察$\mathbf{b}^T\mathbf{x}$的分布变化情况。因此可以直接把变量$\mathbf{b}$用于极大化$\mathbf{b}^T\mathbf{x}$的非高斯性，这样的向量对应于$\mathbf{q}=\mathbf{A}^T\mathbf{b}$只有一个非零元素的情形，从而意味着$ y=\mathbf{b}^T\mathbf{x}=\mathbf{q}^T\mathbf{s}$正好等同于独立成分中的一个。也就是说通过极大化$\mathbf{b}^T\mathbf{x}$的非高斯性，就能给出其中一个独立成分。
 
 

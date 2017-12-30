@@ -1,4 +1,4 @@
-\documentclass[UTF8,zihao=5]{ctexart}
+\documentclass[UTF8,zihao=5,a4paper]{ctexart}
 
 \usepackage{amsmath}
 \usepackage{geometry}
@@ -15,6 +15,35 @@
 \date{}
 
 \begin{document}
+    
+\begin{titlepage}
+    \vspace*{6cm}
+    \Huge
+    \begin{center}
+        \textbf{同济大学机器学习}
+        
+        \textbf{课程报告}
+    \end{center}
+    \vspace{3cm}
+    \begin{table}[h]
+        \Large
+        \centering
+        \begin{tabular}{|l|c|}
+        \hline
+        标题 & ICA理论推导、实现和应用\\
+        \hline
+        姓名 & 余海涛 \\
+        \hline
+        学号 & 1732985\\        
+        \hline
+        专业 & 计算机技术\\
+        \hline
+        班级 & 计算机3班\\
+        \hline
+        \end{tabular}
+    \end{table}
+\end{titlepage}
+
 \maketitle
 
 \begin{abstract}
@@ -22,7 +51,7 @@
 \end{abstract}
 
 
-\section{概述}
+\section{问题背景}
 在统计学中，独立成分分析\cite{icawikipedia,ica,icachinese}（Independent components analysis，缩写：ICA）是一种利用统计原理进行计算的方法。它是一个线性变换。这个变换把数据或信号分离成统计独立的非高斯的信号源的线性组合。独立成分分析是盲信号分离（Blind source separation）的一种特例。
 
 独立成分分析的最重要的假设就是信号源统计独立。这个假设在大多数盲信号分离的情况中符合实际情况。即使当该假设不满足时，仍然可以用独立成分分析来把观察信号统计独立化，从而进一步分析数据的特性。独立成分分析的经典问题是“鸡尾酒会问题”（cocktail party problem）。该问题描述的是给定混合信号，如何分离出鸡尾酒会中同时说话的每个人的独立信号。当有N个信号源时，通常假设观察信号也有N个（例如N个麦克风或者录音机）。该假设意味着混合矩阵是个方阵，即$J = D$，其中$D$是输入数据的维数，$J$是系统模型的维数。对于$J < D$和$J > D$的情况，学术界也分别有不同研究。
@@ -73,25 +102,65 @@ FastICA算法如表\ref{fast_ica_alg}所示：
 
 
 \section{实际应用}
-如前文所述，ICA算法的一个实际应用是盲信号分离。本节先给出一个分离三个合成的周期信号的例子\cite{example} 。
+如前文所述，ICA算法的一个实际应用是盲信号分离。本节先给出一个分离三个合成的周期信号的例子\cite{example} 。结果如图\ref{fig:result1}和图\ref{fig:result2}所示,无论在有无高斯噪声的情况下，ICA均重构出了原始信号，说明ICA方法可以有效的解决盲信号分离的问题。
 
-
-结果如图\ref{fig:result1}所示,
-
-\begin{figure}[ht]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.9\linewidth]{figs/result1}
-    \caption{实验1结果}
+    \caption{无高斯噪声情况下的ICA分离结果}
     \label{fig:result1}
 \end{figure}
 
-本节最后给出一个分离混合音频信号的例子程序。
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\linewidth]{figs/result2}
+    \caption{有高斯噪声情况下的ICA分离结果}
+    \label{fig:result2}
+\end{figure}
+
+在实际中，ICA也被用于图像处理、语言识别、通信、生物医学信号处理、脑功能成像研究、故障诊断、特征提取、金融时间序列分析和数据挖掘等多个领域。
+
+本节最后给出一个分离混合音频信号的例子程序。通过实际的体验，可以发现ICA可以很好的分离线性混合后的音频，并且恢复原始音频，说明ICA可以有效解决理想情况下的鸡尾酒会问题，但是值的注意的是，在现实实验中由于存在录音的误差和信号采样时钟的延迟问题，对于现实场景问题下的鸡尾酒会问题，ICA方法仍然存在很多不适宜的地方。
 
 \section{总结}
-本文分析了ICA方法的数学原理，实现了FastICA算法，并且实际分析了ICA算法的效果。通过本文的写作，本文作者对ICA算法有了清晰的认识，并且可以应用于以后的学习之中。
+本文分析了理论的问题定义和数学原理，实现了FastICA算法，并且实际分析了ICA算法的效果。通过本文的写作，本人对ICA算法有了清晰的认识，对机器学习算法里的数理逻辑有了进一步的认识，可以很好地用于以后的研究中。
 
 % \gbtbibstyle{numerical}
 % \bibliographystyle{gbt-7714-2015-numerical}
 \bibliography{ref}
+
+
+
+\newpage
+{\LARGE{\textbf{附录}}}
+\begin{appendix}
+\section{概率密度函数的变换}\label{apx:1}
+假定$x$和$y$都是n维随机向量，通过下述向量映射相联系：
+\[
+    \mathbf{y}=\mathbf{g}(\mathbf{x})
+\]
+此映射的逆变换存在且唯一，为：
+\[
+    \mathbf{x}=\mathbf{g}^{-1}(\mathbf{y})
+\]
+可以利用$\mathbf{x}$的概率密度分布函数$p_x(\mathbf{x})$得到$\mathbf{y}$的密度$p_y(\mathbf{y})$:
+\[
+    p_y(\mathbf{y})=
+    \frac{1}{| det\,\mathit{J}\mathbf{g}(\mathbf{g}^{-1}(\mathbf{y}) ) |}
+    p_x(\mathbf{g}^{-1}(\mathbf{y}))
+\]
+式中，$\mathit{J}\mathbf{g}$是雅可比矩阵：
+\[
+    \mathit{J}\mathbf{g}(\mathbf{x})=\left[
+    \begin{array}{cccc}
+    \frac{\partial g_1(\mathbf{x})}{\partial x_1}&  \frac{\partial g_2(\mathbf{x})}{\partial x_1}&  \cdots&  \frac{\partial g_n(\mathbf{x})}{\partial x_1}\\ 
+    \frac{\partial g_1(\mathbf{x})}{\partial x_2}&  \frac{\partial g_2(\mathbf{x})}{\partial x_2}&  \cdots&  \frac{\partial g_n(\mathbf{x})}{\partial x_2}\\ 
+    \vdots&  \vdots&  \ddots&  \vdots\\ 
+    \frac{\partial g_1(\mathbf{x})}{\partial x_n}&  \frac{\partial g_2(\mathbf{x})}{\partial x_n}&  \cdots&  \frac{\partial g_n(\mathbf{x})}{\partial x_n}\\ 
+    \end{array} 
+    \right]
+\]
+\end{appendix}
 
 \end{document}          
