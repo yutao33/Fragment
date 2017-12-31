@@ -79,7 +79,7 @@
 \begin{equation}
     \mathbf{V}=\mathbf{E}\mathbf{D}^{-1/2}\mathbf{E}^T
 \end{equation}
-式中，矩阵$\mathbf{D}^{-1/2}=diag\{d_1^{-1/2},d_2^{-1/2},\cdots,d_n^{-1/2}\}$。这样得到的白化矩阵记为$E{\mathbf{xx}^T}^{-1/2}$或$\mathbf{C}^{-1/2}$。在后文的推导过程中，对数据的白化处理也是很重要的一个环节。
+式中，矩阵$\mathbf{D}^{-1/2}=diag\{d_1^{-1/2},d_2^{-1/2},\cdots,d_n^{-1/2}\}$。这样得到的白化矩阵记为$E\{\mathbf{xx}^T\}^{-1/2}$或$\mathbf{C}^{-1/2}$。在后文的推导过程中，对数据的白化处理也是很重要的一个环节。
 
 
 \subsection{极大化非高斯性的ICA估计方法}
@@ -117,3 +117,37 @@ p(x_1,x_2)
 实际情况下我们并不知道$\mathbf{q}$的值，但也无须知道，因为根据定义$\mathbf{b}^T\mathbf{x}=\mathbf{q}^T\mathbf{s}$，可以只让$\mathbf{b}$变化并观察$\mathbf{b}^T\mathbf{x}$的分布变化情况。因此可以直接把变量$\mathbf{b}$用于极大化$\mathbf{b}^T\mathbf{x}$的非高斯性，这样的向量对应于$\mathbf{q}=\mathbf{A}^T\mathbf{b}$只有一个非零元素的情形，从而意味着$ y=\mathbf{b}^T\mathbf{x}=\mathbf{q}^T\mathbf{s}$正好等同于独立成分中的一个。也就是说通过极大化$\mathbf{b}^T\mathbf{x}$的非高斯性，就能给出其中一个独立成分。
 
 
+
+\subsection{用峭度来度量非高斯性}
+为了在ICA估计中使用非高斯性，我们必须对一个随机变量的非高斯性定义一个量化的指标，我们可以采用峭度这一指标，峭度是随机变量的四阶累积量的另一种叫法，y的峭度kurt(y)可定义为
+\begin{equation}
+kurt(y)=E\{y^4\}-3(E\{y^2\})^2
+\end{equation}
+注意上式中的所有随机变量都假定是零均值的。对于一般的情况，定义会更复杂些。为了简化问题，我们还可以进一步假定$y$已经被标准化过，其方差等于1：$E\{y^2\}=1$。这样峭度定义公式的右边简化为$E{y_4}-3$。这说明，峭度可以看作四阶矩的一种规范化形式。对于高斯分布的变量$y$,其四阶矩等于$3(E\{y^2\})$，因此高斯变量的峭度为零。对于大部分（但并不是所有）的非高斯随机变量，峭度为非零值。
+
+\textbf{基于峭度的梯度算法}：在实践中，为了极大化峭度的绝对值，我们可以从某个向量$\mathbf{w}$开始，依据可用的样本值$\mathbf{z}(1),\cdots,\mathbf{z}(T)$,计算出使得$y=\mathbf{w}^T\mathbf{z}$的峭度绝对值增大最快的方向，然后将向量$w$转到该方向。这种思路可以用梯度法来实现。
+
+$\mathbf{w}^T\mathbf{z}$的峭度绝对值的梯度可以用下式计算得到：
+\begin{equation}
+\frac{\partial| \mathbf{w}^T\mathbf{z} |}{\partial \mathbf{w}}
+=4sign( kurt( \mathbf{w}^T\mathbf{z} ) ) [ E\{ \mathbf{z}(\mathbf{w}^T\mathbf{z})^3 \} - 3 \mathbf{w} \lVert \mathbf{w} \rVert^2 ]  \label{equ:wzw}
+\end{equation}
+对于白化过的数据，有$E\{ (\mathbf{w}^T\mathbf{z})^2 \}= \Vert \mathbf{w} \rVert^2$。由于我们是在单位球$\lVert \mathbf{w} \rVert^2=1$上进行优化，梯度法必须进行一定的补充，即在每一步运算后将$\mathbf{w}$投影到单位球上，实际上只要简单地将$\mathbf{w}$除以其范数即可。
+
+因此我们得到下面的梯度算法：
+\begin{align}
+\Delta\mathbf{w} \propto sign( kurt( \mathbf{w}^T\mathbf{z} ) ) E\{ \mathbf{z}( \mathbf{w}^T\mathbf{z} )^3 \} \\
+\mathbf{w}\leftarrow \mathbf{w}/\lVert\mathbf{w}\rVert
+\end{align}
+
+\textbf{基于峭度的快速不动点算法}：虽然基于峭度的梯度算法，理论上可以有效收敛，但是收敛慢，且如果速度选择不当，收敛性甚至会被破坏，所以需要一种学习速度和可靠性上都有保障的算法，不动点迭代法就是一种这样的方法。
+
+关于不动点迭代，可以参考附录\ref{apx:2}。为了得到梯度算法的不动点迭代，我们注意到在梯度算法的一个稳定点处，梯度必须指向$\mathbf{w}$的方向，也就是说梯度必须等于一个常量标量和$\mathbf{w}$的乘积，只有在这种情况下，将梯度与$\mathbf{w}$相加才不改变其方向，且算法在此处收敛。该结论可以用拉格朗日乘子法予以严格证明。令式(\ref{equ:wzw})中的梯度与$\mathbf{w}$相等，可以得到：
+\begin{equation}
+\mathbf{w} \propto [ E\{ \mathbf{z}(\mathbf{w}^T\mathbf{z})^3 \} - 3 \mathbf{w} \lVert \mathbf{w} \rVert^2 ]
+\end{equation}
+我们可以每次计算右边的项，将其赋给$\mathbf{w}$作为新值,并且每次迭代后$\mathbf{w}$都除以其范数以满足$\lVert \mathbf{w} \rVert =1 $,即可得到：
+\begin{equation}
+\mathbf{w} \leftarrow E\{ \mathbf{z}(\mathbf{w}^T\mathbf{z})^3 \} - 3 \mathbf{w} \label{equ:bdd}
+\end{equation}
+公式(\ref{equ:bdd})即是一个不动点迭代公式。

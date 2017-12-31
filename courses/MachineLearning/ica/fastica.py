@@ -1,6 +1,4 @@
-#!/ usr/bin/env python
-# FastICA from ICA book , table 8.4
-
+#!/ usr/bin/env python3
 import math
 import random
 import matplotlib.pyplot as plt
@@ -12,21 +10,17 @@ def f1(x, period = 4):
     return 0.5*(x- math.floor(x/ period )* period )
 
 def create_data ():
-    # data number
-    n = 500
-    # data time
-    T = [0.1*xi for xi in range (0, n)]
-    # source
-    S = array([[sin(xi) for xi in T], [f1(xi) for xi in T]],float32)
-    #mix matrix
-    A = array([[0.8, 0.2], [-0.3, -0.7]], float32)
+    n = 500 # data number
+    T = [0.1*xi for xi in range (0, n)] # data time
+    S = array([[sin(xi) for xi in T], [f1(xi) for xi in T]],float32) # source
+    A = array([[0.8, 0.2], [-0.3, -0.7]], float32) # mix matrix
     return T, S, dot(A, S)
 
 def whiten (X):
-    # zero mean
+    # 零均值
     X_mean = X.mean(axis =-1)
     X -= X_mean [:, newaxis ]
-    # whiten
+    # 白化
     A = dot(X, X.transpose ())
     D , E = linalg.eig(A)
     D2 = linalg.inv( array ([[D[0], 0.0], [0.0, D[1]]], float32 ))
@@ -40,13 +34,11 @@ def _logcosh (x, fun_args =None , alpha = 1):
     return gx , g_x.mean( axis =-1)
 
 def do_decorrelation (W):
-    # black magic
     s, u = linalg.eigh(dot(W, W.T))
     return dot(dot(u * (1./sqrt(s)), u.T), W)
 
 def do_fastica (X):
     n, m = X. shape ; p = float(m); g = _logcosh
-    # black magic
     X *= sqrt(X.shape[1])
     # create w
     W = ones((n,n), float32 )
@@ -73,7 +65,6 @@ def main():
     T, S, D = create_data()
     Dwhiten , K = whiten (D)
     W = do_fastica( Dwhiten )
-    #Sr: reconstructed source
     Sr = dot( dot(W, K), D)
     show_data(T, D)
     show_data(T, S)
