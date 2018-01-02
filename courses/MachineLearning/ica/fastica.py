@@ -56,19 +56,16 @@ def do_fastica (X):
             break
     return W
 
-def show_data(T, S):
-    plt.plot(T, [S[0,i] for i in range (S.shape[1])], marker ="*")
-    plt.plot(T, [S[1,i] for i in range (S.shape[1])], marker ="o")
-    plt.show()
-
 def main():
     T, S, D = create_data()
     Dwhiten , K = whiten (D)
     W = do_fastica( Dwhiten )
     Sr = dot( dot(W, K), D)
-    show_data(T, D)
-    show_data(T, S)
-    show_data(T, Sr)
+    for i,M in enumerate((D,S,Sr),1):
+        plt.subplot(3,1,i)
+        plt.plot(T, [M[0,i] for i in range (S.shape[1])], marker ="*")
+        plt.plot(T, [M[1,i] for i in range (S.shape[1])], marker ="o")
+    plt.show()
     print(W)
 
 if __name__ == "__main__":
