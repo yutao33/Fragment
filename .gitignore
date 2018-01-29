@@ -5,3 +5,6 @@ cmake_install.cmake
 
 #nodejs
 node_modules
+
+#idea
+.idea
