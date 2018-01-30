@@ -4,6 +4,7 @@ import os
 import math
 import networkx as nx  # 1.10
 import matplotlib.pyplot as plt
+import json
 
 from mininet.net import Mininet
 from mininet.node import Controller, RemoteController, OVSController
@@ -78,7 +79,7 @@ def confignet(switchlist,hostlist,linklist):
     info('*** Add links\n')
     for l in linklist:
         assert isinstance(l,GLink)
-        net.addLink(l.node1.n,l.node2.n)
+        net.addLink(l.node1.n,l.node2.n,cls=TCLink,bw=1000)
 
     for s in switchlist:
         del s.n
@@ -101,7 +102,14 @@ def confignet(switchlist,hostlist,linklist):
 def startnet(switchlist,hostlist,linklist):
     net = confignet(switchlist, hostlist, linklist)
 
+    os.system('ip link add ids-ethx type veth peer name ids-ethx-peer')
+    os.system('ovs-vsctl add-port n4 ids-ethx')
+    os.system('ifconfig ids-ethx up')
+    os.system('ifconfig ids-ethx-peer up')
+
     CLI(net)
+
+    os.system('ip link del ids-ethx')
     net.stop()
 
 
@@ -116,12 +124,6 @@ if __name__ == "__main__":
     # pos = nx.spring_layout(topo)
     pos = nx.fruchterman_reingold_layout(topo, center=(0, 0))
 
-    draw = False
-    if draw:
-        nx.draw(topo,pos=pos)
-        nx.draw_networkx_labels(topo,pos,labels=labels)
-        plt.savefig('topo.png')
-
     s = {str(n): GSwitch(str(n)) for n in topo.adj}
     l = {}
     for n in topo.adj:
@@ -135,33 +137,12 @@ if __name__ == "__main__":
     switchlist = s.values()
     linklist = l.values()
 
-    # tmp = sorted(pos.items(),key=lambda t:t[1][0]**2+t[1][1]**2,reverse=True)
-    # for i in range(len(tmp)*2/3):
-    #     n=tmp[i][0]
-    #     host=GHost("h"+str(i),ip="10.0.0.%d"%(i+1))
-    #     hostlist.append(host)
-    #     linklist.append(GLink(host,s[n]))
+    with open('hostlist.json','r') as fp:
+        result = json.load(fp)
 
-    tmp = {(n, math.sqrt(p[0] ** 2 + p[1] ** 2)) for n, p in pos.items()}
-    tmp = sorted(tmp,key=lambda t:t[1],reverse=True)
-    delta=tmp[0][1]*2/3
-    for i,a in enumerate(tmp,1):
-        n=a[0]
-        host=GHost("h"+str(i),ip="10.0.0.%d"%(i))
+    for hostname,conf in result.items():
+        host=GHost(hostname,ip=conf['ip'])
         hostlist.append(host)
-        linklist.append(GLink(host,s[n]))
-        id='hs'+str(i)
-        topo.adj[host.name]={s[n].name:{'id':id}}
-        topo.adj[s[n].name][host.name]={'id':id}
-        topo.node[host.name]={'y':'0','x':'0'}
-        if a[1]<delta:
-            break
-    # topo.edge=topo.adj
-    # if draw:
-    #     pos = nx.fruchterman_reingold_layout(topo, center=(0, 0))
-    #     nx.draw(topo,pos=pos)
-    #     nx.draw_networkx_labels(topo,pos,labels=labels)
-    #     plt.savefig('topo1.png')
-    #     exit(0)
+        linklist.append(GLink(host,s[conf['switch']]))
 
     startnet(switchlist,hostlist,linklist)
