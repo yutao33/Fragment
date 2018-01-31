@@ -8,6 +8,7 @@
 * Ubuntu 16.04
 * OpenDaylight Carbon
 * ONOS 1.12.0
+* Mininet 2.3.0d1
 
 ### 测试拓扑: Noel
 
