@@ -45,7 +45,7 @@ for i,d in enumerate(data):
 
 
 data = [[45.25, 65.25, 2059.75],
-        [33.75, 0, 4004.25]]
+        [33.75, 49.0, 4004.25]]
 la =[systemname,'ONOS','ODL']
 color = [themecolor1,themecolor2,themecolor3]
 
