@@ -1,0 +1,89 @@
+
+
+
+
+
+ab -c 10 -n 100 http://10.0.0.7/50M.dat 
+
+Benchmarking 10.0.0.7 (be patient).....done
+
+
+Server Software:        nginx/1.10.3
+Server Hostname:        10.0.0.7
+Server Port:            80
+
+Document Path:          /50M.dat
+Document Length:        52428800 bytes
+
+Concurrency Level:      10
+Time taken for tests:   44.341 seconds
+Complete requests:      100
+Failed requests:        0
+Total transferred:      5242906600 bytes
+HTML transferred:       5242880000 bytes
+Requests per second:    2.26 [#/sec] (mean)
+Time per request:       4434.091 [ms] (mean)
+Time per request:       443.409 [ms] (mean, across all concurrent requests)
+Transfer rate:          115469.57 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        4    6   1.9      6      17
+Processing:  2314 4332 881.3   4196    7848
+Waiting:        5   13  25.3      6     212
+Total:       2319 4338 881.0   4202    7854
+
+Percentage of the requests served within a certain time (ms)
+  50%   4202
+  66%   4600
+  75%   4832
+  80%   4886
+  90%   5537
+  95%   6328
+  98%   6868
+  99%   7854
+ 100%   7854 (longest request)
+
+
+
+
+
+Benchmarking 10.0.0.7 (be patient).....done
+
+
+Server Software:        nginx/1.10.3
+Server Hostname:        10.0.0.7
+Server Port:            80
+
+Document Path:          /50M.dat
+Document Length:        52428800 bytes
+
+Concurrency Level:      10
+Time taken for tests:   44.147 seconds
+Complete requests:      100
+Failed requests:        0
+Total transferred:      5242906600 bytes
+HTML transferred:       5242880000 bytes
+Requests per second:    2.27 [#/sec] (mean)
+Time per request:       4414.718 [ms] (mean)
+Time per request:       441.472 [ms] (mean, across all concurrent requests)
+Transfer rate:          115976.28 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        3    6   2.6      6      29
+Processing:  1645 4334 862.9   4183    7502
+Waiting:        2    8   5.4      6      28
+Total:       1649 4341 863.1   4189    7509
+
+Percentage of the requests served within a certain time (ms)
+  50%   4189
+  66%   4443
+  75%   4639
+  80%   4979
+  90%   5516
+  95%   6221
+  98%   7094
+  99%   7509
+ 100%   7509 (longest request)
+
