@@ -79,6 +79,12 @@ def test1():
     data=data[4444:len(data)//2]
     writeaudio(r"C:\Users\yutao\Downloads\out.mp3",data)
 
+def test2():
+    data,fr=readaudio(r"C:\Users\yutao\Downloads\lz.mp3")
+    plt.plot(data)
+    plt.show()
+
+
 def mix():
     data1,fs1=readaudio(r"C:\Users\yutao\Downloads\lz.mp3")
     data2,fs2=readaudio(r"C:\Users\yutao\Downloads\mhh.mp3")
@@ -110,5 +116,51 @@ def unmix_1():
     d /= np.max(abs(d), axis = 0)
     writeaudio(r"C:\Users\yutao\Downloads\mhh_unmix.wav",d,format='wav')
 
+def unmix_2():
+    data,fs=readaudio(r"C:\Users\yutao\Downloads\bbcenglish.mp3")
+    d=fastica(data)
+    d /= np.max(abs(d), axis = 0)
+    writeaudio(r"C:\Users\yutao\Downloads\bbcenglish_unmix.wav",d,format='wav')
+
+
+def sin_rand():
+    x=np.linspace(0,30,1000)
+    print(x)
+    y_sin=np.sin(x)
+    noise1=np.random.normal(size=y_sin.shape)
+    noise2=np.random.normal(size=y_sin.shape)
+    y1=y_sin+0.5*noise1
+    y2=y_sin+0.5*noise2
+    plt.subplot(211)
+    plt.plot(x,y1)
+    plt.plot(x,y2)
+    y=np.c_[y1,y2]
+    ica=FastICA()
+    yy=ica.fit(y).transform(y)
+    print(ica.mixing_)
+    plt.subplot(212)
+    plt.plot(x,yy)
+    plt.show()
+
+def test3():
+    data,fr=readaudio(r"C:\Users\yutao\Downloads\bbcenglish.mp3")
+    data=data
+    ica=FastICA()
+    dd=ica.fit(data).transform(data)
+    print(ica.mixing_)
+    #plt.plot(data)
+    # plt.plot(dd)
+    a=np.int32(np.linspace(0,len(data)-2,10000))
+    plt.scatter(data[a,0],data[a,1],s=1)
+    plt.show()
+
+def test4():
+    data,fs=readaudio(r"C:\Users\yutao\Downloads\wangningmei.mp3")
+    #d=fastica(data)
+    d=data.dot(np.array([[1,1],[1,-1]]))
+    d /= np.max(abs(d), axis = 0)
+    writeaudio(r"C:\Users\yutao\Downloads\wangningmei_unmix_manual.wav",d,format='wav')
+
+
 if __name__=="__main__":
-    unmix_1()
+    test3()
