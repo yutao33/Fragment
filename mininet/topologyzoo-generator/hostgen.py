@@ -9,7 +9,7 @@ import io
 
 
 if __name__ == "__main__":
-    topology_name = "Noel"  # Noel Carnet Sprint Geant2012
+    topology_name = "Noel"  # Noel Carnet Sprint Geant2012  Basnet
     filename = "/home/yutao/Work/topologyzoo/topologyzoo-graphml2/sources/" + \
                topology_name + ".graphml"
     topo = nx.read_graphml(filename).to_undirected()
@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
     nx.draw(topo,pos=pos)
     nx.draw_networkx_labels(topo,pos,labels=labels)
-    plt.savefig('topo.png')
+    plt.savefig(topology_name+'-topo.png')
 
     switchlist = [str(n) for n in topo.adj]
     
@@ -39,7 +39,7 @@ if __name__ == "__main__":
     tmp = {(n, math.sqrt(p[0] ** 2 + p[1] ** 2)) for n, p in pos.items()}
     tmp = sorted(tmp,key=lambda t:t[1],reverse=True)
     delta=tmp[0][1]*2/3
-
+    delta = 0;
     for i,a in enumerate(tmp,1):
         n=a[0]
         hostname = "h"+str(n);
@@ -55,6 +55,13 @@ if __name__ == "__main__":
             l['bw']=1000
 
     with open('topo.json','w') as fp:
+        json.dump({
+                "switchlist":switchlist,
+                "hostmap":hostmap,
+                "linklist":linklist
+            },fp,indent=True)
+
+    with open(topology_name+'-'+'topo.json','w') as fp:
         json.dump({
                 "switchlist":switchlist,
                 "hostmap":hostmap,
