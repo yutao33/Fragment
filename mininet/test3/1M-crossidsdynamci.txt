@@ -1,0 +1,162 @@
+
+Benchmarking 10.0.0.7 (be patient).....done
+
+
+Server Software:        nginx/1.10.3
+Server Hostname:        10.0.0.7
+Server Port:            80
+
+Document Path:          /1M.dat
+Document Length:        1048576 bytes
+
+Concurrency Level:      10
+Time taken for tests:   4.046 seconds
+Complete requests:      100
+Failed requests:        0
+Total transferred:      104884000 bytes
+HTML transferred:       104857600 bytes
+Requests per second:    24.71 [#/sec] (mean)
+Time per request:       404.618 [ms] (mean)
+Time per request:       40.462 [ms] (mean, across all concurrent requests)
+Transfer rate:          25314.17 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        2   90 255.2     14    1040
+Processing:    48  300 157.6    291     747
+Waiting:        0   28  59.0     10     352
+Total:         54  390 309.0    309    1410
+
+Percentage of the requests served within a certain time (ms)
+  50%    309
+  66%    374
+  75%    451
+  80%    529
+  90%    669
+  95%   1367
+  98%   1383
+  99%   1410
+ 100%   1410 (longest request)
+
+
+BenBenchmarking 10.0.0.7 (be patient).....done
+
+
+Server Software:        nginx/1.10.3
+Server Hostname:        10.0.0.7
+Server Port:            80
+
+Document Path:          /1M.dat
+Document Length:        1048576 bytes
+
+Concurrency Level:      10
+Time taken for tests:   3.497 seconds
+Complete requests:      100
+Failed requests:        0
+Total transferred:      104884000 bytes
+HTML transferred:       104857600 bytes
+Requests per second:    28.60 [#/sec] (mean)
+Time per request:       349.696 [ms] (mean)
+Time per request:       34.970 [ms] (mean, across all concurrent requests)
+Transfer rate:          29289.94 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        2   31 142.5      8    1022
+Processing:   112  303 130.3    299     875
+Waiting:        2   15  41.5     10     419
+Total:        115  334 203.4    320    1415
+
+Percentage of the requests served within a certain time (ms)
+  50%    320
+  66%    364
+  75%    407
+  80%    418
+  90%    468
+  95%    620
+  98%   1394
+  99%   1415
+ 100%   1415 (longest request)
+chmarking 10.0.0.7 (be patient).....done
+
+
+Server Software:        nginx/1.10.3
+Server Hostname:        10.0.0.7
+Server Port:            80
+
+Document Path:          /1M.dat
+Document Length:        1048576 bytes
+
+Concurrency Level:      10
+Time taken for tests:   3.497 seconds
+Complete requests:      100
+Failed requests:        0
+Total transferred:      104884000 bytes
+HTML transferred:       104857600 bytes
+Requests per second:    28.60 [#/sec] (mean)
+Time per request:       349.696 [ms] (mean)
+Time per request:       34.970 [ms] (mean, across all concurrent requests)
+Transfer rate:          29289.94 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        2   31 142.5      8    1022
+Processing:   112  303 130.3    299     875
+Waiting:        2   15  41.5     10     419
+Total:        115  334 203.4    320    1415
+
+Percentage of the requests served within a certain time (ms)
+  50%    320
+  66%    364
+  75%    407
+  80%    418
+  90%    468
+  95%    620
+  98%   1394
+  99%   1415
+ 100%   1415 (longest request)
+
+
+
+Benchmarking 10.0.0.7 (be patient).....done
+
+
+Server Software:        nginx/1.10.3
+Server Hostname:        10.0.0.7
+Server Port:            80
+
+Document Path:          /1M.dat
+Document Length:        1048576 bytes
+
+Concurrency Level:      10
+Time taken for tests:   3.790 seconds
+Complete requests:      100
+Failed requests:        0
+Total transferred:      104884000 bytes
+HTML transferred:       104857600 bytes
+Requests per second:    26.39 [#/sec] (mean)
+Time per request:       378.981 [ms] (mean)
+Time per request:       37.898 [ms] (mean, across all concurrent requests)
+Transfer rate:          27026.66 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        2   55 195.3     14    1009
+Processing:    74  309 153.3    325     736
+Waiting:        2   15  13.4     13     115
+Total:         76  364 259.7    340    1436
+
+Percentage of the requests served within a certain time (ms)
+  50%    340
+  66%    384
+  75%    406
+  80%    423
+  90%    655
+  95%    798
+  98%   1433
+  99%   1436
+ 100%   1436 (longest request)
+root@yutao-Plex:~/Desktop/Fragment/mininet/topologyzoo-generator# 
+
+
+
