@@ -79,10 +79,10 @@ def confignet(switchlist,hostlist,linklist):
         assert isinstance(l,GLink)
         net.addLink(l.node1.n,l.node2.n,cls=TCLink,bw=l.bw)
 
-    # for s in switchlist:
-    #     del s.n
-    # for h in hostlist:
-    #     del h.n
+    for s in switchlist:
+        del s.n
+    for h in hostlist:
+        del h.n
 
     info('*** Starting network\n')
     net.build()
@@ -101,14 +101,14 @@ def startnet(switchlist,hostlist,linklist):
     setLogLevel('info')
     net = confignet(switchlist, hostlist, linklist)
 
-    #os.system('ip link add ids-ethx type veth peer name ids-ethx-peer')
-    #os.system('ovs-vsctl add-port n4 ids-ethx')
-    #os.system('ifconfig ids-ethx up')
-    #os.system('ifconfig ids-ethx-peer up')
+    os.system('ip link add ids-ethx type veth peer name ids-ethx-peer')
+    os.system('ovs-vsctl add-port n4 ids-ethx')
+    os.system('ifconfig ids-ethx up')
+    os.system('ifconfig ids-ethx-peer up')
 
     CLI(net)
 
-    #os.system('ip link del ids-ethx')
+    os.system('ip link del ids-ethx')
     net.stop()
 
 
@@ -119,10 +119,12 @@ if __name__ == "__main__":
     switchlist = topo['switchlist']
     linklist = topo['linklist']
 
-    switchobjectmap = {n: GSwitch(n) for n in switchlist}
-    hostobjectmap = {n:GHost(n,ip=conf['ip']) for n,conf in hostmap.items()}
+    switchobjectmap = {str(n): GSwitch(str(n)) for n in switchlist}
+    hostobjectmap = {str(n):GHost(str(n),ip=str(conf['ip'])) for n,conf in hostmap.items()}
     merge = dict(switchobjectmap,**hostobjectmap)
-    linkobjectlist = [GLink(merge[link['node1']],merge[link['node2']],link['bw']) for link in linklist]
+    linkobjectlist = [GLink(merge[str(link['node1'])],
+                            merge[str(link['node2'])],
+                            int(link['bw'])) for link in linklist]
 
     hostobjectlist = hostobjectmap.values()
     switchobjectlist = switchobjectmap.values()
