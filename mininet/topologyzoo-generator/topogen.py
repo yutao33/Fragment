@@ -2,8 +2,6 @@
 
 import os
 import math
-import networkx as nx  # 1.10
-import matplotlib.pyplot as plt
 import json
 
 from mininet.net import Mininet
@@ -44,17 +42,17 @@ class GHost(GNode):
 
 
 class GLink(object):
-    def __init__(self, node1, node2):
+    def __init__(self, node1, node2, bw):
         assert isinstance(node1, GNode)
         assert isinstance(node2, GNode)
         self.node1 = node1
         self.node2 = node2
+        self.bw = bw
     def __str__(self):
         return "GLink[%s,%s]"%(str(self.node1),str(self.node2))
 
 
 def confignet(switchlist,hostlist,linklist):
-    setLogLevel('info')
     net = Mininet(topo=None,
                   build=False,
                   ipBase='10.0.0.0/8',autoSetMacs=True)
@@ -79,12 +77,12 @@ def confignet(switchlist,hostlist,linklist):
     info('*** Add links\n')
     for l in linklist:
         assert isinstance(l,GLink)
-        net.addLink(l.node1.n,l.node2.n,cls=TCLink,bw=1000)
+        net.addLink(l.node1.n,l.node2.n,cls=TCLink,bw=l.bw)
 
-    for s in switchlist:
-        del s.n
-    for h in hostlist:
-        del h.n
+    # for s in switchlist:
+    #     del s.n
+    # for h in hostlist:
+    #     del h.n
 
     info('*** Starting network\n')
     net.build()
@@ -100,49 +98,33 @@ def confignet(switchlist,hostlist,linklist):
     return net
 
 def startnet(switchlist,hostlist,linklist):
+    setLogLevel('info')
     net = confignet(switchlist, hostlist, linklist)
 
-    os.system('ip link add ids-ethx type veth peer name ids-ethx-peer')
-    os.system('ovs-vsctl add-port n4 ids-ethx')
-    os.system('ifconfig ids-ethx up')
-    os.system('ifconfig ids-ethx-peer up')
+    #os.system('ip link add ids-ethx type veth peer name ids-ethx-peer')
+    #os.system('ovs-vsctl add-port n4 ids-ethx')
+    #os.system('ifconfig ids-ethx up')
+    #os.system('ifconfig ids-ethx-peer up')
 
     CLI(net)
 
-    os.system('ip link del ids-ethx')
+    #os.system('ip link del ids-ethx')
     net.stop()
 
 
 if __name__ == "__main__":
-    topology_name = "Noel"  # Noel Carnet Sprint Geant2012
-    filename = "/home/yutao/Work/topologyzoo/topologyzoo-graphml2/sources/" + \
-               topology_name + ".graphml"
-    topo = nx.read_graphml(filename).to_undirected()
-    labels = {}
-    for n in topo.adj:
-        labels[n] = n
-    # pos = nx.spring_layout(topo)
-    pos = nx.fruchterman_reingold_layout(topo, center=(0, 0))
+    with open('topo.json') as fp:
+        topo = json.load(fp)
+    hostmap=topo['hostmap']
+    switchlist = topo['switchlist']
+    linklist = topo['linklist']
 
-    s = {str(n): GSwitch(str(n)) for n in topo.adj}
-    l = {}
-    for n in topo.adj:
-        s[n] = GSwitch(n)
-    for n1, t1 in topo.edge.items():
-        for n2, t2 in t1.items():
-            id = t2['id']
-            if not s.has_key(id):
-                l[id] = GLink(s[n1], s[n2])
-    hostlist = []
-    switchlist = s.values()
-    linklist = l.values()
+    switchobjectmap = {n: GSwitch(n) for n in switchlist}
+    hostobjectmap = {n:GHost(n,ip=conf['ip']) for n,conf in hostmap.items()}
+    merge = dict(switchobjectmap,**hostobjectmap)
+    linkobjectlist = [GLink(merge[link['node1']],merge[link['node2']],link['bw']) for link in linklist]
 
-    with open('hostlist.json','r') as fp:
-        result = json.load(fp)
+    hostobjectlist = hostobjectmap.values()
+    switchobjectlist = switchobjectmap.values()
 
-    for hostname,conf in result.items():
-        host=GHost(hostname,ip=conf['ip'])
-        hostlist.append(host)
-        linklist.append(GLink(host,s[conf['switch']]))
-
-    startnet(switchlist,hostlist,linklist)
+    startnet(switchobjectlist,hostobjectlist,linkobjectlist)
