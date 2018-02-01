@@ -33,7 +33,7 @@ data = [[0.695, 0.502, 0.253,   0.945, 0.144],
         [17.202,5.916, 1.72, 71.578,3.234],
         [0.234,0.185,  0.12,  0.376,0.130],
         [2.495,1.686,  0.387, 4.23,0.685]]
-la =[systemname+'-SP',systemname+'-ST',systemname+'-Flood','ONOS-fwd','ODL-L2Switch']
+la =['ShortestPath','SpanningTree','Flood','ONOS-fwd','ODL-L2Switch']
 
 color = [themecolor1,themecolor1,themecolor1,themecolor3,themecolor3]
 
