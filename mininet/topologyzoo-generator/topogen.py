@@ -101,14 +101,14 @@ def startnet(switchlist,hostlist,linklist):
     setLogLevel('info')
     net = confignet(switchlist, hostlist, linklist)
 
-    # os.system('ip link add ids-ethx type veth peer name ids-ethx-peer')
-    # os.system('ovs-vsctl add-port n4 ids-ethx')
-    # os.system('ifconfig ids-ethx up')
-    # os.system('ifconfig ids-ethx-peer up')
+    os.system('ip link add ids-ethx type veth peer name ids-ethx-peer')
+    os.system('ovs-vsctl add-port n4 ids-ethx')
+    os.system('ifconfig ids-ethx up')
+    os.system('ifconfig ids-ethx-peer up')
 
     CLI(net)
 
-    # os.system('ip link del ids-ethx')
+    os.system('ip link del ids-ethx')
     net.stop()
 
 
