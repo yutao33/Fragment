@@ -19,17 +19,17 @@
 
 其中
 
-* SP : 使用最短路径的应用,生成的流表会匹配端口，源和目的地址
-* ST : 以目的端口为根节点，计算最小生成树，生成的流表匹配端口和目的地址
+* ShortestPath : 使用最短路径的应用,生成的流表会匹配端口，源和目的地址
+* SpanningTree : 以目的端口为根节点，计算最小生成树，生成的流表匹配端口和目的地址
 * Flood : 以一个固定端口为根，且计算过程中保持一定的顺序，对整个拓扑计算一个固定的最小生成树，生成的流表只匹配端口
-* ONOS : ONOS-fwd应用
-* ODL : ODL l2switch应用
+* ONOS-fwd : ONOS-fwd应用
+* ODL-l2switch : ODL l2switch应用
 
 可以得到的结论有，
 
-* 可以用不同的算法实现L2Switch的应用, 效率上也不相同
-* 和ONOS相比，响应速度都快于ONOS
-* 和ODL相比，因为ODL-l2switch网络内部链路使用广播方式，和Flood应用相比，Flood应用的响应速度也更快
+* 在本系统下，可以用不同的算法实现二层交换, 效率上也不相同
+* 和ONOS相比，响应速度都快于ONOS的Intent system
+* 因为ODL-l2switch网络内部链路使用广播方式，和Flood应用相比，Flood应用的响应速度也更快
 
 # test2
 
@@ -46,9 +46,8 @@ link down:
 
 ![result](./plot/figs/test2_2.png)
 
-测试时，在link down的情况下ONOS无法恢复
 
-可以得到的结论有，
+可以得到的结论，
 
 * 系统可以快速恢复
 
