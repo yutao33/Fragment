@@ -4,12 +4,12 @@ from datetime import datetime
 import time
 import json
 
-address = ('10.0.0.7',80)
+address = ('10.0.0.2',80)
 
 print("Start the client at {}".format(datetime.now()))
 client = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 client.connect(address)
-client.sendall(b'GET /50M.dat HTTP/1.1\r\nHost: 10.0.0.7\r\nUser-Agent: curl/7.47.0\r\nAccept: */*\r\n\r\n')
+client.sendall(b'GET /4G.dat HTTP/1.1\r\nHost: 10.0.0.2\r\nUser-Agent: curl/7.47.0\r\nAccept: */*\r\n\r\n')
 
 
 countsize = 102400*2 # 10KB
