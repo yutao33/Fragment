@@ -4,7 +4,7 @@ from datetime import datetime
 import time
 import json
 
-address = ('10.0.0.2',80)
+address = ('10.0.0.1',80)
 
 print("Start the client at {}".format(datetime.now()))
 client = socket.socket(socket.AF_INET,socket.SOCK_STREAM)

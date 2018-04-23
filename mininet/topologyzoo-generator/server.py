@@ -30,16 +30,16 @@ while True:
     if num==lastnum+1:
         count = count + 1
         if bb:
-        	cc = cc + 1
-        	if cc>3:
-        		cc = 0
-        		bb = False
-        		print("get it %d"%(num-c1))
+            cc = cc + 1
+            if cc>3:
+                cc = 0
+                bb = False
+                print("get it %d"%(num-c1))
         else:
-        	if cc>3:
-        		c1 = num
-        	else:
-        		cc = cc + 1
+            if cc>3:
+                c1 = num
+            else:
+                cc = cc + 1
     else:
         print("num=%d lastnum=%d dist=%d"%(num,lastnum,num-lastnum))
         bb = True
