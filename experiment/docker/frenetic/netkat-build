@@ -1,0 +1,23 @@
+#!/bin/bash
+
+[ -d _build ] || mkdir _build
+
+BARE_NAME=$(echo $1 | cut -f 1 -d '.')
+
+rm _build/$BARE_NAME.* 2> /dev/null
+
+ocamlbuild \
+  -use-ocamlfind \
+  -pkg core \
+  -pkg async \
+  -pkg frenetic \
+  -pkg frenetic.async \
+  -pkg frenetic.ppx \
+  -tag thread \
+  -tag debug \
+  -tag annot \
+  -tag bin_annot \
+  -tag short_paths \
+  -cflags "-w,-40,-thread" \
+  $1
+
