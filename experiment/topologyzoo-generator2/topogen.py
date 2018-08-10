@@ -48,7 +48,7 @@ def confignet(topo, args):
 
     net = Mininet(topo=None,
                   build=False,
-                  ipBase='10.0.0.0/8',autoSetMacs=True)
+                  ipBase='10.0.0.0/8',autoSetMacs=True,autoStaticArp=True)
 
     info('*** Adding controller\n')
     c0 = net.addController(name='c0',

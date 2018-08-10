@@ -23,7 +23,10 @@ links:
   endpoint1: {node: n3, port: 3}
   endpoint2: {node: hn2, port: 0}
 - bw: null
-  endpoint1: {node: n4, port: 3}
+  endpoint1: {node: n2}
+  endpoint2: {node: ids, port: 0}
+- bw: null
+  endpoint1: {node: n4}
   endpoint2: {node: ids, port: 1}
 
 

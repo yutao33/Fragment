@@ -50,5 +50,6 @@ if __name__ == "__main__":
     nx.draw_networkx_edges(topo, edgelist=sw_sw, pos=pos, edge_color='k',style='-')
     nx.draw_networkx_edges(topo, edgelist=sw_host, pos=pos, edge_color='b', style='--')
     nx.draw_networkx_labels(topo, pos, labels=labels)
-    # plt.savefig(topology_name+'-topo.png')
+    if outputfile:
+        plt.savefig(outputfile)
     plt.show()
