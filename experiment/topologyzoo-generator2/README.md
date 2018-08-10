@@ -4,8 +4,8 @@
 
 * Mininet, see [https://github.com/mininet/mininet](https://github.com/mininet/mininet)
 * PyYAML
-* networkx (cfggen.py)
-* matplotlib (cfggen.py)
+* networkx (cfggen.py, cfgshow.py)
+* matplotlib (cfggen.py, cfgshow.py)
 
 
 ## Usage
