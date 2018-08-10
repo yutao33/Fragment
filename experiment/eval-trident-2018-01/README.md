@@ -15,7 +15,7 @@
 
 ### 结果:
 
-![result1_1](./plot/figs/test1_Geant2012_40_101.png)
+![result1_1](./figs/test1_Geant2012_40_101.png)
 
 其中
 
@@ -40,11 +40,11 @@
 
 switch down:
 
-![result](./plot/figs/test2_1.png)
+![result](./figs/test2_1.png)
 
 link down:
 
-![result](./plot/figs/test2_2.png)
+![result](./figs/test2_2.png)
 
 
 可以得到的结论，
@@ -74,7 +74,7 @@ Client节点使用apache benchmark (2.3)测试传输速率
 
 ### 结果:
 
-![result](./plot/figs/test3.png)
+![result](./figs/test3.png)
 
 * P1 是最短路径策略
 * P2 是必须经过n4并且转发到IDS

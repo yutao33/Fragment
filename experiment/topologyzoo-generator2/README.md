@@ -42,7 +42,7 @@ links:
 ## Example
 
 ```
-python topogen.py topo.yaml
+python topogen.py config/topo.yaml
 ```
 
 
@@ -52,5 +52,16 @@ python topogen.py topo.yaml
 some tests
 
 ```
+sh ovs-ofctl add-flow n2 -O OpenFlow13 in_port=1,action=output:2,3
+sh ovs-ofctl add-flow n2 -O OpenFlow13 in_port=2,action=output:1,3
+sh ovs-ofctl add-flow n1 -O OpenFlow13 ip,ip_dst=10.0.0.2,action=output:1
+sh ovs-ofctl add-flow n1 -O OpenFlow13 ip,ip_dst=10.0.0.1,action=output:3
+sh ovs-ofctl add-flow n3 -O OpenFlow13 ip,ip_dst=10.0.0.2,action=output:3
+sh ovs-ofctl add-flow n3 -O OpenFlow13 ip,ip_dst=10.0.0.1,action=output:1
 
+hn2 python -m SimpleHTTPServer 80 &
+ids cd /home/yutao/Desktop/trident-demo/testbed/bro
+ids bro -C -i ids-eth0 http.bro > output0.log &
+
+hn1 curl http://10.0.0.2
 ```
