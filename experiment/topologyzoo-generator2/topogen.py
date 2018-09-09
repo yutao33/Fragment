@@ -19,8 +19,22 @@ from mininet.link import TCLink, Intf
 
 
 class ExtendCLI(CLI):
-    def __init__(self, mininet):
+    def __init__(self, mininet, cmds_initial, cmds_destroy):
+        self.current = None
+        self.cmds_initial = cmds_initial
+        self.cmds_destory = cmds_destroy
         CLI.__init__(self, mininet)
+
+    def run(self):
+        if self.cmds_initial:
+            for line in self.cmds_initial:
+                info(line+"\n")
+                self.onecmd(line)
+        CLI.run(self)
+        if self.cmds_destory:
+            for line in self.cmds_destory:
+                info(line+"\n")
+                self.onecmd(line)
 
     def do_clear(self, _line):
         """
@@ -31,6 +45,31 @@ class ExtendCLI(CLI):
             print(cmd)
             call(cmd, shell=True)
 
+    def do_dump(self, _line):
+        """
+        self-defined command, clear all OpenFlow rules
+        """
+        for i in self.mn.switches:
+            cmd = "ovs-ofctl dump-flows %s -O OpenFlow13"%str(i)
+            print(cmd)
+            call(cmd, shell=True)
+
+    def do_test(self, _line):
+        import time,random
+        sw_list = [str(i) for i in self.mn.switches]
+        while True:
+            nex = random.randint(0,len(sw_list)-1)
+            if self.current != nex:
+                self.current=nex
+                nex_sw = sw_list[nex]
+                cmd = "ovs-vsctl del-port n1-eth2"
+                print(cmd)
+                call(cmd,shell=True)
+                cmd = "ovs-vsctl add-port %s n1-eth2"%nex_sw
+                print(cmd)
+                call(cmd, shell=True)
+            time.sleep(1)
+
 
 def split_ip( ip ):
     mat = re.match(r"^((?:[0-9]{1,3}\.){3}[0-9]{1,3}):(\d+)$", ip)
@@ -38,6 +77,7 @@ def split_ip( ip ):
         raise Exception("controller format error")
     else:
         return str(mat.group(1)),int(mat.group(2))
+
 
 def confignet(topo, args):
     cip,cport = split_ip(args.controller)
@@ -92,7 +132,13 @@ def confignet(topo, args):
 def startnet(topo, args):
     setLogLevel('info')
     net = confignet(topo, args)
-    ExtendCLI(net)
+    cmds_initial = None
+    cmds_destroy = None
+    cmds = topo.get("commands")
+    if cmds:
+        cmds_initial = cmds.get("initial")
+        cmds_destroy = cmds.get("destroy")
+    ExtendCLI(net, cmds_initial, cmds_destroy)
     net.stop()
 
 
@@ -102,6 +148,7 @@ def portno_generator(defined_list, start=1):
         if i not in defined_list:
             yield i
         i+=1
+
 
 def config_verify(topo):
     switches = topo["switches"]
@@ -164,7 +211,7 @@ def config_verify(topo):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Mininet topology generator")
     parser.add_argument("config",type=str,help="Topology configuration file")
-    parser.add_argument("--controller", type=str, default="127.0.0.1:6653", help="Remote controller, default 127.0.0.1:6653")
+    parser.add_argument("--controller", type=str, default="127.0.0.1:6633", help="Remote controller, default 127.0.0.1:6653")
     args = parser.parse_args()
     with open(args.config) as fp:
         topo = yaml.safe_load(fp)
